@@ -41,3 +41,19 @@ const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+// Skill schema and model
+const skillSchema = new mongoose.Schema({
+  name: String,
+  level: String,
+});
+const Skill = mongoose.model("Skill", skillSchema);
+
+// Route to get all skills
+app.get("/skills", async (req, res) => {
+  try {
+    const skills = await Skill.find();
+    res.json(skills);
+  } catch (error) {
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
