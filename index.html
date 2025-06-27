@@ -1,30 +1,46 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>LearnHub - Skill Enhancement Center</title>
+  <title>LearnHub - Skill Enhancement</title>
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; }
-    h1 { color: #333; margin-top: 40px; }
-    .button { 
-      display: inline-block; 
-      padding: 10px 20px; 
-      background-color: #4CAF50; 
-      color: white; 
-      text-decoration: none; 
-      margin: 10px; 
-      border-radius: 5px;
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+    h1 { color: #333; }
+    .course {
+      background: white;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
     }
   </style>
 </head>
 <body>
+  <h1>📘 LearnHub Courses</h1>
+  <div id="courses">Loading courses...</div>
 
-  <h1>Welcome to LearnHub</h1>
-  <p>Your Center for Skill Enhancement</p>
-
-  <a href="courses.html" class="button">View Courses</a>
-  <a href="contact.html" class="button">Contact Us</a>
-
+  <script>
+    fetch('https://learnhub-backend-k65w.onrender.com/courses')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('courses');
+        container.innerHTML = '';
+        data.forEach(course => {
+          const div = document.createElement('div');
+          div.className = 'course';
+          div.innerHTML = `
+            <h3>${course.title}</h3>
+            <p><strong>Description:</strong> ${course.description}</p>
+            <p><strong>Instructor:</strong> ${course.instructor}</p>
+            <p><strong>Duration:</strong> ${course.duration}</p>
+          `;
+          container.appendChild(div);
+        });
+      })
+      .catch(err => {
+        document.getElementById('courses').innerText = 'Failed to load courses 😢';
+        console.error(err);
+      });
+  </script>
 </body>
 </html>
