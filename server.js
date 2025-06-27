@@ -1,22 +1,23 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config(); // Optional: for .env usage
+require('dotenv').config(); // Optional if using .env
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ MongoDB Connection (Update this if not using .env)
+// ✅ MongoDB URI - Direct or via environment variable
 const mongoURI = process.env.MONGODB_URI || 'mongodb+srv://learnhub:Learnhub%40123@cluster0.vk2znf0.mongodb.net/learnhub?retryWrites=true&w=majority&appName=Cluster0';
 
+// ✅ Connect to MongoDB
 mongoose.connect(mongoURI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
+  useUnifiedTopology: true
 })
 .then(() => console.log('✅ MongoDB Connected'))
 .catch((err) => {
-  console.error('❌ MongoDB Error:', err.message);
+  console.error('❌ MongoDB Connection Error:', err.message);
   process.exit(1);
 });
 
@@ -29,12 +30,12 @@ const courseSchema = new mongoose.Schema({
 });
 const Course = mongoose.model('Course', courseSchema);
 
-// ✅ Root route
+// ✅ Root Route
 app.get('/', (req, res) => {
   res.send('🚀 LearnHub Backend Live');
 });
 
-// ✅ Get all courses
+// ✅ API Route: Get all courses
 app.get('/courses', async (req, res) => {
   try {
     const courses = await Course.find();
