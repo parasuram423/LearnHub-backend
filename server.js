@@ -2,28 +2,23 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+// Initialize Express
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ Connect to MongoDB
-mongoose.connect('mongodb+srv://parasurams423:parasuram6281@cluster0.vk2znf0.mongodb.net/learnhub?retryWrites=true&w=majority&appName=Cluster0', {
+// ✅ MongoDB Connection URI with encoded password
+mongoose.connect('mongodb+srv://Parasurams423:parasu%401234@cluster0.vk2znf0.mongodb.net/learnhub?retryWrites=true&w=majority&appName=Cluster0', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
 .then(() => console.log('✅ MongoDB Connected'))
 .catch((err) => console.error('❌ MongoDB Error:', err));
 
-// 📘 Course Schema
-const courseSchema = new mongoose.Schema({
-    title: String,
-    description: String,
-    instructor: String,
-    duration: String
-});
-const Course = mongoose.model('Course', courseSchema);
+// ✅ Import Course model
+const Course = require('./Course');
 
-// 📘 Route: Get All Courses
+// ✅ Route to get all courses
 app.get('/courses', async (req, res) => {
     try {
         const courses = await Course.find();
@@ -33,8 +28,8 @@ app.get('/courses', async (req, res) => {
     }
 });
 
-// ✅ Start Server
-const PORT = process.env.PORT || 3000;
+// ✅ Start the server
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
 });
